@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc,
-  getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+  getDocs, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { getAuth, signInAnonymously, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -19,36 +19,57 @@ export const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Client-side helper functions
-export function signInAnonymouslyUser() {
-  return signInAnonymously(auth);
-};
+export async function signInAnonymouslyUser() {
+  const auth = getAuth();
+  try {
+    const { user } = await signInAnonymously(auth);
+    
+    // If the user is new and has no name, assign "User_RANDOM"
+    if (!user.displayName) {
+      const randomNum = Math.floor(1000 + Math.random() * 9000); // 1000-9999
+      const newName = `User_${randomNum}`;
+      
+      await updateProfile(user, {
+        displayName: newName
+      });
+      
+      // Return a copy with the new name so the state updates immediately
+      return { ...user, displayName: newName };
+    }
+    
+    return user;
+  } catch (error) {
+    console.error("Auth Error:", error);
+    throw error;
+  }
+}
 
 export function onAuthStateChangedListener(callback) {
   return onAuthStateChanged(auth, callback);
 };
 
-export function getCurrentUser() {
+export async function getCurrentUser() {
   return auth.currentUser;
 };
 
-export const addBuildtoFirebase = (build) => {
+export async function addBuildtoFirebase(build) {
   return addDoc(collection(db, "builds"), build);
 };
 
-export const getBuildsFromFirebase = () => {
+export async function getBuildsFromFirebase() {
   return getDocs(collection(db, "builds"));
 };
 
-export const getBuildById = (buildId) => {
+export async function getBuildById(buildId) {
   return getDoc(doc(db, "builds", buildId));
 };
 
-export const updateBuildInFirebase = (buildId, updatedData) => {
+export async function updateBuildInFirebase(buildId, updatedData) {
   const buildRef = doc(db, "builds", buildId);
   return updateDoc(buildRef, updatedData);
 };
 
-export const deleteBuildFromFirebase = (buildId) => {
+export async function deleteBuildFromFirebase(buildId) {
   const buildRef = doc(db, "builds", buildId);
   return deleteDoc(buildRef);
 };
