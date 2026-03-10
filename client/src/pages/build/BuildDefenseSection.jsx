@@ -3,12 +3,19 @@ import { useState } from "react";
 import axios from "axios";
 import BuildList from "../../components/BuildList/BuildList.jsx";
 import ItemList from "../../components/ItemList/ItemList.jsx";
-
+import SearchBar from "../../components/SearchBar/SearchBar.jsx";
 
 function BuildDefenseSection({ setAppSections }) {
   const [defense, setDefense] = useState("none");
   const [defenseName, setDefenseName] = useState("");
   const [defenseDescription, setDefenseDescription] = useState("");
+
+  const DEFENSE_TYPES = {
+    none: "None",
+    armor: "Physical Defense",
+    shield: "Magical Defense",
+    hybrid: "Hybrid Defense"
+  }
 
   const handleSave = async () => {
     if (!defenseName.trim()) {
@@ -23,15 +30,13 @@ function BuildDefenseSection({ setAppSections }) {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/builds", newBuild);
+      await axios.post("http://localhost:5000/api/builds", newBuild);
 
-      if (response.ok) {
-        alert("Defense Saved!");
-        // Refresh the page or update state here
-        setDefenseName("");
-        setDefense("none");
-        setDefenseDescription("");
-      }
+      alert("Defense Saved!");
+      // Refresh the page or update state here
+      setDefenseName("");
+      setDefense("none");
+      setDefenseDescription("");
     } catch (error) {
       console.error("Save failed:", error);
       alert("Failed to save defense. Please try again.");
@@ -41,6 +46,8 @@ function BuildDefenseSection({ setAppSections }) {
   return (
     <div className="build-defense-section">
       <h2>Build Defense</h2>
+
+      <SearchBar />
       
       <div className="form-group">
         <label>Build Name:</label>
@@ -53,13 +60,14 @@ function BuildDefenseSection({ setAppSections }) {
         
         <label>Type:</label>
         <select value={defense} onChange={(e) => setDefense(e.target.value)}>
-          <option value="none">None</option>
-          <option value="armor">Physical Defense</option>
-          <option value="shield">Magical Defense</option>
-          <option value="hybrid">Hybrid Defense</option>
+          {Object.entries(DEFENSE_TYPES).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </select>
 
-        <ItemList />
+        <ItemList category={DEFENSE_TYPES[defense]}/>
 
         <button onClick={handleSave}>Save Defense</button>
       </div>

@@ -14,6 +14,18 @@ function SearchBar() {
                 console.error("Error fetching results:", error);
             }
         };
+        
+        if (!query.trim()) {
+            setResults([]);
+            return;
+        }
+
+        const delay = setTimeout(() => {
+            fetchResults();
+        }, 300); // wait 300ms after user stops typing
+
+        return () => clearTimeout(delay); // cleanup on each keystroke
+
     }, [query]);
 
     return (
@@ -24,6 +36,14 @@ function SearchBar() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
+            <div className="search-results">
+                {results.map((build) => (
+                    <div key={build.id} className="search-result-item">
+                        <h3>{build.name}</h3>
+                        <p>{build.description}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

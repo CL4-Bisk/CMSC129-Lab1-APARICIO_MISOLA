@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.get("/api/items", async (req, res) => {
   try {
-    const response = await axios.get("https://mlbb-wiki-api.vercel.app/api/equipment");
+    const response = await axios.get("https://raw.githubusercontent.com/p3hndrx/MLBB-API/refs/heads/main/v1/item-meta-final.json");
     res.json(response.data); // Forward the MLBB data to your frontend
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch MLBB data" });
@@ -45,9 +45,9 @@ app.post("/api/builds", async (req, res) => {
   }
 });
 
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 module.exports = app;
 
