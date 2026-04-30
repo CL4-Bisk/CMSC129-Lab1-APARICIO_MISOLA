@@ -44,40 +44,80 @@ function BuildDefenseSection({ setAppSections }) {
   };
 
   return (
-    <div className="build-defense-section">
-      <h2>Build Defense</h2>
+    <main className="shop-page build-defense-section">
+      <section className="shop-frame">
+        <header className="shop-header">
+          <div className="shop-title-group">
+            <p className="shop-kicker">Defense Workshop</p>
+            <h1 className="shop-title">Build Defense</h1>
+          </div>
+          <div className="shop-actions">
+            <button className="shop-button ghost" onClick={() => setAppSections("HOME")} type="button">
+              Back to Shop
+            </button>
+          </div>
+        </header>
 
-      <SearchBar />
-      
-      <div className="form-group">
-        <label>Build Name:</label>
-        <input 
-          type="text" 
-          placeholder="Enter build name"
-          value={defenseName} 
-          onChange={(e) => setDefenseName(e.target.value)} 
-        />
-        
-        <label>Type:</label>
-        <select value={defense} onChange={(e) => setDefense(e.target.value)}>
-          {Object.entries(DEFENSE_TYPES).map(([key, value]) => (
-            <option key={key} value={key}>
-              {value}
-            </option>
-          ))}
-        </select>
+        <div className="shop-body">
+          <SearchBar />
 
-        <ItemList category={DEFENSE_TYPES[defense]}/>
+          <div className="shop-grid-two">
+            <section className="shop-card-panel">
+              <h3>Build Details</h3>
+              <div className="field-grid build-form">
+                <label>
+                  Build Name
+                  <input
+                    type="text"
+                    placeholder="Enter build name"
+                    value={defenseName}
+                    onChange={(e) => setDefenseName(e.target.value)}
+                  />
+                </label>
 
-        <button onClick={handleSave}>Save Defense</button>
-      </div>
+                <label>
+                  Type
+                  <select value={defense} onChange={(e) => setDefense(e.target.value)}>
+                    {Object.entries(DEFENSE_TYPES).map(([key, value]) => (
+                      <option key={key} value={key}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-      <button onClick={() => setAppSections("HOME")}>Back</button>
+                <label>
+                  Notes
+                  <textarea
+                    placeholder="Counter item plan, enemy damage type, or timing notes"
+                    value={defenseDescription}
+                    onChange={(e) => setDefenseDescription(e.target.value)}
+                  />
+                </label>
 
-      <hr />
-      {/* 3. YOU MUST ADD THIS TAG TO SEE THE LIST ON SCREEN */}
-      <BuildList /> 
-    </div>
+                <button className="shop-button primary" onClick={handleSave} type="button">
+                  Save Defense
+                </button>
+              </div>
+
+              <BuildList />
+            </section>
+
+            <section className="shop-panel">
+              <div className="shop-panel-header">
+                <div>
+                  <h2>Defense Items</h2>
+                  <p className="shop-panel-subtitle">Pick armor, shields, and hybrid counters.</p>
+                </div>
+              </div>
+              <div className="shop-panel-body">
+                <ItemList category="Defense" />
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
 

@@ -70,20 +70,22 @@
 
 ## 📂 Project Structure
 
-project-folder/<br>
-│ ├── node_modules/ (needs to install in folder) <br>
-│<br>
-│ ├── public/<br>
-│<br>
-│ ├── src/<br>
-│<br>
-│ ├── screenshots/ (to be released soon)<br>
-│<br>
-│ ├── .gitignore<br>
-│ ├── package-lock.json<br>
-│ ├── package.json<br>
-│ ├── README.md (for website documentation)<br>
-│ ├── README for npm.md (for npm installation)<br>
+```text
+cmsc129-fern-crud/
+├── client/                 # React frontend
+│   ├── public/
+│   ├── src/
+│   └── package.json
+├── server/                 # Express backend
+│   ├── config/             # Firebase Admin configuration
+│   ├── middleware/         # Custom middleware
+│   ├── routes/             # API routes
+│   ├── server.js           # Main server file
+│   └── package.json
+├── vercel.json
+├── README.md
+└── .gitignore
+```
 
 ---
 
