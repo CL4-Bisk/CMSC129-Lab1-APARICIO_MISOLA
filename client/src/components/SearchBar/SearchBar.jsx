@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "./SearchBar.css";
 
 function SearchBar() {
     const [query, setQuery] = useState("");
@@ -36,14 +37,14 @@ function SearchBar() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
-            <div className="search-results">
+            {results.length > 0 && <div className="search-results">
                 {results.map((build) => (
                     <div key={build.id} className="search-result-item">
                         <h3>{build.name}</h3>
                         <p>{build.description}</p>
                     </div>
                 ))}
-            </div>
+            </div>}
         </div>
     );
 }
