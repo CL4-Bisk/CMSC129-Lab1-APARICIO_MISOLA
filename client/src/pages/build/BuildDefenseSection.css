@@ -1,0 +1,9 @@
+@import "./../../index.css";
+
+.build-form {
+  margin-top: 14px;
+}
+
+.build-form .shop-button {
+  width: 100%;
+}

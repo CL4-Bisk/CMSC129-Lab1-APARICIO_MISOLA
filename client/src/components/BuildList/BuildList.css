@@ -1,0 +1,26 @@
+.build-list {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(127, 145, 173, 0.28);
+}
+
+.build-list h3 {
+  margin: 0 0 10px;
+}
+
+.build-list p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.build-item {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(127, 145, 173, 0.32);
+  border-radius: 6px;
+  background: rgba(7, 9, 15, 0.34);
+}
+
+.build-item strong {
+  color: var(--gold);
+}
