@@ -6,7 +6,7 @@
 
 ## 📌 Table of Contents
 
-- [About the Project](#-about-the-game)
+- [About the Project](#-about-the-project)
 - [Features](#-features)
 - [Screenshots](#-screenshots) - to be released soon
 - [Built With](#-built-with)
