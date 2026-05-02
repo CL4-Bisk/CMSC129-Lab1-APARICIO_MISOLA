@@ -1,6 +1,6 @@
 import "./BuildDefenseSection.css";
 import { useState } from "react";
-import axios from "axios";
+import api from "../../api/api.js";
 import BuildList from "../../components/BuildList/BuildList.jsx";
 import ItemList from "../../components/ItemList/ItemList.jsx";
 import SearchBar from "../../components/SearchBar/SearchBar.jsx";
@@ -30,7 +30,7 @@ function BuildDefenseSection({ setAppSections }) {
     };
 
     try {
-      await axios.post("http://localhost:5000/api/builds", newBuild);
+      await api.post("/builds", newBuild);
 
       alert("Defense Saved!");
       // Refresh the page or update state here
