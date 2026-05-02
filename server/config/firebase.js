@@ -26,6 +26,14 @@ const getBuildById = (buildId) => {
   return db.collection("builds").doc(buildId).get();
 };
 
+const deleteBuildById = (buildId) => {
+  return db.collection("builds").doc(buildId).delete();
+};
+
+const updateBuildById = (buildId, updatedData) => {
+  return db.collection("builds").doc(buildId).update(updatedData);
+};
+
 module.exports = {
   admin,
   db,
@@ -33,4 +41,6 @@ module.exports = {
   addBuildtoFirebase,
   getBuildsFromFirebase,
   getBuildById,
+  deleteBuildById,
+  updateBuildById
 };
