@@ -1,13 +1,12 @@
 import "./BuildList.css";
-import axios from "axios";
 import { useState, useEffect } from "react";
+import api from "../../api/api.js";
 
 function BuildList() {
   const [builds, setBuilds] = useState([]);
 
   useEffect(() => {
-    // This is the "URL including the port" part:
-    axios.get("http://localhost:5000/api/builds")
+    api.get("/builds")
       .then((res) => setBuilds(res.data))
       .catch((err) => console.error("Error fetching builds:", err));
   }, []);

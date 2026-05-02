@@ -1,6 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc,
-  getDocs, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, signInAnonymously, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 const firebaseConfig = {
@@ -15,7 +13,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Client-side helper functions
@@ -50,26 +47,4 @@ export function onAuthStateChangedListener(callback) {
 
 export async function getCurrentUser() {
   return auth.currentUser;
-};
-
-export async function addBuildtoFirebase(build) {
-  return addDoc(collection(db, "builds"), build);
-};
-
-export async function getBuildsFromFirebase() {
-  return getDocs(collection(db, "builds"));
-};
-
-export async function getBuildById(buildId) {
-  return getDoc(doc(db, "builds", buildId));
-};
-
-export async function updateBuildInFirebase(buildId, updatedData) {
-  const buildRef = doc(db, "builds", buildId);
-  return updateDoc(buildRef, updatedData);
-};
-
-export async function deleteBuildFromFirebase(buildId) {
-  const buildRef = doc(db, "builds", buildId);
-  return deleteDoc(buildRef);
 };
