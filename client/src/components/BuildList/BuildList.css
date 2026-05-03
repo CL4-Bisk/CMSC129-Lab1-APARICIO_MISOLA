@@ -13,8 +13,12 @@
   color: var(--muted);
 }
 
+.build-page {
+  display: grid;
+  gap: 8px;
+}
+
 .build-item {
-  margin-top: 8px;
   padding: 10px 12px;
   border: 1px solid rgba(127, 145, 173, 0.32);
   border-radius: 6px;
@@ -23,4 +27,74 @@
 
 .build-item strong {
   color: var(--gold);
+}
+
+.build-pagination {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.build-page-button {
+  min-width: 38px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(127, 145, 173, 0.42);
+  border-radius: 6px;
+  color: var(--text);
+  background: rgba(7, 9, 15, 0.38);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.pagination-short-label {
+  display: none;
+}
+
+.build-page-button:hover:not(:disabled),
+.build-page-button.is-active {
+  border-color: rgba(231, 185, 87, 0.88);
+  color: #fff5cf;
+  background: linear-gradient(180deg, #674d29, #2c2217);
+}
+
+.build-page-button.page-number {
+  width: 38px;
+  padding: 0;
+}
+
+.build-page-ellipsis {
+  min-width: 24px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+@media (max-width: 520px) {
+  .build-page-button {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 0.78rem;
+  }
+
+  .build-page-button.page-number {
+    width: 32px;
+  }
+
+  .pagination-full-label {
+    display: none;
+  }
+
+  .pagination-short-label {
+    display: inline;
+  }
+
+  .build-page-ellipsis {
+    min-width: 16px;
+  }
 }

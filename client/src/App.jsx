@@ -5,15 +5,22 @@ import BuildSection from "./pages/build/BuildDefenseSection.jsx";
 import HomeSection from "./pages/home/HomeSection.jsx";
 
 function App() {
-  const [sections, setSections] = useState("HOME");
+  const [sections, setSections] = useState(
+    () => localStorage.getItem("currentSection") || "HOME"
+  );
+
+  const changeSection = (section) => {
+    localStorage.setItem("currentSection", section);
+    setSections(section);
+  };
 
   switch (sections) {
     case "BUILD-DEFENSE":
-      return <BuildSection setAppSections={setSections} />;
+      return <BuildSection setAppSections={changeSection} />;
     case "HOME":
-      return <HomeSection setAppSections={setSections} />;
+      return <HomeSection setAppSections={changeSection} />;
     default:
-      return <HomeSection setAppSections={setSections} />;
+      return <HomeSection setAppSections={changeSection} />;
   }
 }
 
