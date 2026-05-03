@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously, onAuthStateChanged, updateProfile } from "firebase/auth";
+import {
+  browserLocalPersistence,
+  getAuth,
+  onAuthStateChanged,
+  setPersistence,
+  signInAnonymously,
+  updateProfile
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,11 +21,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const authPersistenceReady = setPersistence(auth, browserLocalPersistence);
 
 // Client-side helper functions
 export async function signInAnonymouslyUser() {
-  const auth = getAuth();
   try {
+    await authPersistenceReady;
     const { user } = await signInAnonymously(auth);
     
     // If the user is new and has no name, assign "User_RANDOM"
