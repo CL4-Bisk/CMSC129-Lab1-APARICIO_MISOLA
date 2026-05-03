@@ -2,9 +2,28 @@ import "./ItemList.css";
 import { useEffect, useState } from "react";
 import api from "../../api/api.js";
 
+const ITEMS_PER_PAGE = 8;
+
+function getPaginationItems(currentPage, totalPages) {
+    if (totalPages <= 5) {
+        return Array.from({ length: totalPages }, (_, index) => index + 1);
+    }
+
+    if (currentPage <= 3) {
+        return [1, 2, 3, 4, "end-ellipsis", totalPages];
+    }
+
+    if (currentPage >= totalPages - 2) {
+        return [1, "start-ellipsis", totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+
+    return [1, "start-ellipsis", currentPage - 1, currentPage, currentPage + 1, "end-ellipsis", totalPages];
+}
+
 function ItemList({ category }) {
     const [items, setItems] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         const fetchAllItems = async () => {
@@ -22,6 +41,20 @@ function ItemList({ category }) {
         ? items.filter(item => item.category === category)
         : items;
 
+    const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+    const pageStart = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pagedItems = filtered.slice(pageStart, pageStart + ITEMS_PER_PAGE);
+    const paginationItems = getPaginationItems(currentPage, totalPages);
+
+    useEffect(() => {
+        setCurrentPage(1);
+        setSelectedItem(null);
+    }, [category]);
+
+    useEffect(() => {
+        setCurrentPage((page) => Math.min(page, totalPages));
+    }, [totalPages]);
+
     const getItemInitials = (name = "") => {
         return name
             .split(" ")
@@ -32,18 +65,26 @@ function ItemList({ category }) {
             .toUpperCase();
     };
 
-    const visibleItem = selectedItem || filtered[0];
+    const getItemKey = (item) => item?.id || item?.name;
+    const visibleItem = selectedItem || pagedItems[0] || filtered[0];
+
+    const goToPage = (page) => {
+        const nextPage = Math.min(Math.max(page, 1), totalPages);
+        setCurrentPage(nextPage);
+        setSelectedItem(null);
+    };
 
     return (
         <div className="item-browser">
-            <div className="item-list">
+            <div className="item-list-wrap">
+                <div className="item-list">
                 {filtered.length === 0 ? (
                     <div className="item-empty">No items found.</div>
                 ) : (
-                    filtered.map((item) => (
+                    pagedItems.map((item) => (
                         <button
-                            key={item.id || item.name}
-                            className={`item-item ${visibleItem?.id === item.id ? "is-selected" : ""}`}
+                            key={getItemKey(item)}
+                            className={`item-item ${getItemKey(visibleItem) === getItemKey(item) ? "is-selected" : ""}`}
                             onClick={() => setSelectedItem(item)}
                             type="button"
                         >
@@ -60,6 +101,47 @@ function ItemList({ category }) {
                             {item.cost && <div className="item-cost">{item.cost}</div>}
                         </button>
                     ))
+                )}
+                </div>
+
+                {filtered.length > ITEMS_PER_PAGE && (
+                    <div className="list-pagination" aria-label="Item pages">
+                        <button
+                            className="pagination-button"
+                            onClick={() => goToPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            type="button"
+                            aria-label="Previous item page"
+                        >
+                            <span className="pagination-full-label">Prev</span>
+                            <span className="pagination-short-label">{"<"}</span>
+                        </button>
+                        {paginationItems.map((page) => (
+                            typeof page === "number" ? (
+                                <button
+                                    key={page}
+                                    className={`pagination-button page-number ${currentPage === page ? "is-active" : ""}`}
+                                    onClick={() => goToPage(page)}
+                                    type="button"
+                                    aria-current={currentPage === page ? "page" : undefined}
+                                >
+                                    {page}
+                                </button>
+                            ) : (
+                                <span key={page} className="pagination-ellipsis" aria-hidden="true">...</span>
+                            )
+                        ))}
+                        <button
+                            className="pagination-button"
+                            onClick={() => goToPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            type="button"
+                            aria-label="Next item page"
+                        >
+                            <span className="pagination-full-label">Next</span>
+                            <span className="pagination-short-label">{">"}</span>
+                        </button>
+                    </div>
                 )}
             </div>
 
