@@ -3,6 +3,7 @@
 import { useState } from "react";
 import BuildSection from "./pages/build/BuildDefenseSection.jsx";
 import HomeSection from "./pages/home/HomeSection.jsx";
+import CalculatorSection from "./pages/calculator/CalculatorSection.jsx";
 
 function App() {
   const [sections, setSections] = useState(
@@ -19,6 +20,8 @@ function App() {
       return <BuildSection setAppSections={changeSection} />;
     case "HOME":
       return <HomeSection setAppSections={changeSection} />;
+    case "CALCULATE-DAMAGE":
+      return <CalculatorSection setAppSections={setSections} />;
     default:
       return <HomeSection setAppSections={changeSection} />;
   }
