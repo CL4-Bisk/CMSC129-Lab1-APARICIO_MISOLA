@@ -25,8 +25,18 @@
   background: rgba(7, 9, 15, 0.34);
 }
 
+.build-item-main {
+  line-height: 1.35;
+}
+
 .build-item strong {
   color: var(--gold);
+}
+
+.build-item-sub {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
 }
 
 .build-pagination {

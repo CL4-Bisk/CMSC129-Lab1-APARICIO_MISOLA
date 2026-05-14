@@ -1,15 +1,18 @@
 import "./ItemDescription.css";
 import { useState, useEffect } from "react";
 import api from "../../api/api.js";
+import { useGlobalInfoModal } from "../GlobalInfoModal/GlobalInfoModalContext.jsx";
+import { getErrorMessage } from "../../utils/errorMessage.js";
 
 function ItemDescription() {
+  const { showError } = useGlobalInfoModal();
   const [builds, setBuilds] = useState([]);
 
   useEffect(() => {
     api.get("/builds")
       .then((res) => setBuilds(res.data))
-      .catch((err) => console.error("Error fetching builds:", err));
-  }, []);
+      .catch((error) => showError("Build list unavailable", getErrorMessage(error, "Unable to fetch saved builds right now.")));
+  }, [showError]);
 
   return (
     <div className="build-list">
