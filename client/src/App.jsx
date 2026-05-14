@@ -21,6 +21,9 @@ function App() {
     case "BUILD-DEFENSE":
       content = <BuildSection setAppSections={changeSection} />;
       break;
+    case "CALCULATE-DAMAGE":
+      content = <CalculatorSection setAppSections={setSections} />;
+      break;
     case "HOME":
       content = <HomeSection setAppSections={changeSection} />;
       break;
