@@ -3,6 +3,7 @@
 import { useState } from "react";
 import BuildSection from "./pages/build/BuildDefenseSection.jsx";
 import HomeSection from "./pages/home/HomeSection.jsx";
+import { GlobalInfoModalProvider } from "./components/GlobalInfoModal/GlobalInfoModalContext.jsx";
 
 function App() {
   const [sections, setSections] = useState(
@@ -14,14 +15,19 @@ function App() {
     setSections(section);
   };
 
+  let content;
   switch (sections) {
     case "BUILD-DEFENSE":
-      return <BuildSection setAppSections={changeSection} />;
+      content = <BuildSection setAppSections={changeSection} />;
+      break;
     case "HOME":
-      return <HomeSection setAppSections={changeSection} />;
+      content = <HomeSection setAppSections={changeSection} />;
+      break;
     default:
-      return <HomeSection setAppSections={changeSection} />;
+      content = <HomeSection setAppSections={changeSection} />;
   }
+
+  return <GlobalInfoModalProvider>{content}</GlobalInfoModalProvider>;
 }
 
 export default App;
