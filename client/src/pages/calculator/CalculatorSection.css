@@ -1,0 +1,125 @@
+@import "./../../index.css";
+
+.damage-calculator {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 320px;
+  gap: 15px;
+  padding: 20px;
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+h1 {
+  width: 100%;
+  margin: 0 0 10px 0;
+  color: var(--gold);
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.damage-calculator > button:first-of-type {
+  width: 45%;
+  min-height: 45px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  color: var(--gold);
+  background: linear-gradient(180deg, rgba(231, 185, 87, 0.1), transparent);
+}
+
+.damage-calculator > button:first-of-type:hover {
+  background: rgba(231, 185, 87, 0.2);
+}
+
+input[type="number"] {
+  width: 180px;
+  padding: 8px;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--teal);
+  font-weight: bold;
+}
+
+fieldset {
+  width: 250px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  margin: 0;
+}
+
+legend {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0 8px;
+}
+
+.damage-calculator fieldset div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.history-button, 
+.home-button, 
+.edit-setup-button, 
+.add-setup-button {
+  padding: 8px 12px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-right: 5px;
+}
+
+.edit-setup-button, 
+.add-setup-button {
+  border-color: var(--teal);
+  color: var(--teal);
+  font-size: 0.8rem;
+  padding: 5 40px;
+  margin-left: 10px;
+}
+
+ol {
+  margin: 0;
+  padding: 10px;
+  width: 220px;
+  background: var(--bg-deep);
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  list-style: none;
+}
+
+li {
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.damage-text {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--red);
+  text-shadow: 0 0 10px rgba(201, 77, 86, 0.4);
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  border-left: 3px solid var(--red);
+  display: inline-block;
+}

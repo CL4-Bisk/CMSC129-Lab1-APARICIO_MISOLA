@@ -3,6 +3,7 @@
 import { useState } from "react";
 import BuildSection from "./pages/build/BuildDefenseSection.jsx";
 import HomeSection from "./pages/home/HomeSection.jsx";
+import CalculatorSection from "./pages/calculator/CalculatorSection.jsx";
 import { GlobalInfoModalProvider } from "./components/GlobalInfoModal/GlobalInfoModalContext.jsx";
 
 function App() {
@@ -19,6 +20,9 @@ function App() {
   switch (sections) {
     case "BUILD-DEFENSE":
       content = <BuildSection setAppSections={changeSection} />;
+      break;
+    case "CALCULATE-DAMAGE":
+      content = <CalculatorSection setAppSections={setSections} />;
       break;
     case "HOME":
       content = <HomeSection setAppSections={changeSection} />;

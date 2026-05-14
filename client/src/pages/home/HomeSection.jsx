@@ -76,6 +76,9 @@ function HomeSection({ setAppSections }) {
                 <button className="shop-button primary" onClick={() => setAppSections("BUILD-DEFENSE")} type="button">
                   Build Defense
                 </button>
+                <button className="shop-button primary calculate-button" onClick={() => setAppSections("CALCULATE-DAMAGE")} type="button">
+                  Calculator
+                </button>
               </div>
             </div>
             <div className="shop-panel-body">
