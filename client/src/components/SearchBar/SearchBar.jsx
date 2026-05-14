@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import api from "../../api/api.js";
 import "./SearchBar.css";
+import { useGlobalInfoModal } from "../GlobalInfoModal/GlobalInfoModalContext.jsx";
+import { getErrorMessage } from "../../utils/errorMessage.js";
 
 function SearchBar() {
+    const { showError } = useGlobalInfoModal();
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
 
@@ -14,7 +17,7 @@ function SearchBar() {
                 });
                 setResults(response.data);
             } catch (error) {
-                console.error("Error fetching results:", error);
+                showError("Search unavailable", getErrorMessage(error, "Unable to search builds right now."));
             }
         };
         
@@ -29,7 +32,7 @@ function SearchBar() {
 
         return () => clearTimeout(delay); // cleanup on each keystroke
 
-    }, [query]);
+    }, [query, showError]);
 
     return (
         <div className="search-bar">

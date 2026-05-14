@@ -3,8 +3,11 @@ import "./HomeSection.css";
 import { useState, useEffect } from "react";
 import { onAuthStateChangedListener, signInAnonymouslyUser } from "../../firebase/firebase.js";
 import ItemList from "../../components/ItemList/ItemList.jsx";
+import { useGlobalInfoModal } from "../../components/GlobalInfoModal/GlobalInfoModalContext.jsx";
+import { getErrorMessage } from "../../utils/errorMessage.js";
 
 function HomeSection({ setAppSections }) {
+  const { showError } = useGlobalInfoModal();
   const [user, setUser] = useState(null);
   const [category, setCategory] = useState("");
   const categories = ["", "Defense", "Attack", "Magic", "Movement"];
@@ -15,13 +18,13 @@ function HomeSection({ setAppSections }) {
         setUser(user);
       } else {
         signInAnonymouslyUser().then(setUser).catch((error) => {
-          console.error("Failed to sign in anonymously:", error);
+          showError("Sign-in failed", getErrorMessage(error, "Unable to sign in anonymously right now."));
         });
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [showError]);
 
   return (
     <main className="shop-page home-section">
