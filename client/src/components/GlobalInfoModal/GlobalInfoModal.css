@@ -1,0 +1,73 @@
+.global-info-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 14, 28, 0.64);
+  display: grid;
+  place-items: center;
+  z-index: 2000;
+  padding: 16px;
+}
+
+.global-info-modal {
+  width: min(100%, 420px);
+  background: #151822;
+  border: 1px solid #3d4354;
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  color: #f2f4ff;
+}
+
+.global-info-modal h2 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.global-info-modal p {
+  margin: 0 0 18px;
+  color: #cdd4ea;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.global-info-modal-info {
+  border-color: #4963ba;
+}
+
+.global-info-modal-error {
+  border-color: #af3c3c;
+}
+
+.global-info-modal-confirm {
+  border-color: #a57b20;
+}
+
+.global-info-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.global-info-modal-button {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.global-info-modal-button.primary {
+  background: #4f79ff;
+  color: #f5f7ff;
+}
+
+.global-info-modal-button.secondary {
+  background: #2a3144;
+  color: #e7ecff;
+}
+
+.global-info-modal-button.danger {
+  background: #b13d3d;
+  color: #fff4f4;
+}

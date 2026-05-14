@@ -1,6 +1,8 @@
 import "./BuildList.css";
 import { useState, useEffect } from "react";
 import api from "../../api/api.js";
+import { useGlobalInfoModal } from "../GlobalInfoModal/GlobalInfoModalContext.jsx";
+import { getErrorMessage } from "../../utils/errorMessage.js";
 
 const BUILDS_PER_PAGE = 5;
 
@@ -20,15 +22,16 @@ function getPaginationItems(currentPage, totalPages) {
   return [1, "start-ellipsis", currentPage - 1, currentPage, currentPage + 1, "end-ellipsis", totalPages];
 }
 
-function BuildList() {
+function BuildList({ refreshKey = 0 }) {
+  const { showError } = useGlobalInfoModal();
   const [builds, setBuilds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     api.get("/builds")
       .then((res) => setBuilds(res.data))
-      .catch((err) => console.error("Error fetching builds:", err));
-  }, []);
+      .catch((error) => showError("Build list unavailable", getErrorMessage(error, "Unable to fetch saved builds right now.")));
+  }, [refreshKey, showError]);
 
   const totalPages = Math.max(1, Math.ceil(builds.length / BUILDS_PER_PAGE));
   const pageStart = (currentPage - 1) * BUILDS_PER_PAGE;
@@ -51,7 +54,12 @@ function BuildList() {
           <div className="build-page">
             {pagedBuilds.map(build => (
               <div key={build.id} className="build-item">
-                <strong>{build.name}</strong> - {build.type}
+                <div className="build-item-main">
+                  <strong>{build.name}</strong> - {build.type}
+                </div>
+                <div className="build-item-sub">
+                  {Array.isArray(build.items) ? `${build.items.length}/6 items selected` : "No item slots saved"}
+                </div>
               </div>
             ))}
           </div>

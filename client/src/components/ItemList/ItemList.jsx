@@ -1,6 +1,8 @@
 import "./ItemList.css";
 import { useEffect, useState } from "react";
 import api from "../../api/api.js";
+import { useGlobalInfoModal } from "../GlobalInfoModal/GlobalInfoModalContext.jsx";
+import { getErrorMessage } from "../../utils/errorMessage.js";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -20,7 +22,8 @@ function getPaginationItems(currentPage, totalPages) {
     return [1, "start-ellipsis", currentPage - 1, currentPage, currentPage + 1, "end-ellipsis", totalPages];
 }
 
-function ItemList({ category }) {
+function ItemList({ category, onItemPick, selectedItems = [] }) {
+    const { showError } = useGlobalInfoModal();
     const [items, setItems] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,11 +34,11 @@ function ItemList({ category }) {
                 const response = await api.get("/all-items");
                 setItems(response.data.data);
             } catch (error) {
-                console.error("Error fetching items:", error);
+                showError("Items unavailable", getErrorMessage(error, "Unable to fetch items right now."));
             }
         };
         fetchAllItems();
-    }, []);
+    }, [showError]);
 
     const filtered = category
         ? items.filter(item => item.category === category)
@@ -67,6 +70,10 @@ function ItemList({ category }) {
 
     const getItemKey = (item) => item?.id || item?.name;
     const visibleItem = selectedItem || pagedItems[0] || filtered[0];
+    const getSlotIndex = (item) => {
+        const itemKey = getItemKey(item);
+        return selectedItems.findIndex((slotItem) => getItemKey(slotItem) === itemKey);
+    };
 
     const goToPage = (page) => {
         const nextPage = Math.min(Math.max(page, 1), totalPages);
@@ -81,26 +88,37 @@ function ItemList({ category }) {
                 {filtered.length === 0 ? (
                     <div className="item-empty">No items found.</div>
                 ) : (
-                    pagedItems.map((item) => (
-                        <button
-                            key={getItemKey(item)}
-                            className={`item-item ${getItemKey(visibleItem) === getItemKey(item) ? "is-selected" : ""}`}
-                            onClick={() => setSelectedItem(item)}
-                            type="button"
-                        >
-                            <div className="item-icon">
-                                {item.imageUrl ? (
-                                    <img src={item.imageUrl} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} />
-                                ) : null}
-                                <span>{getItemInitials(item.name)}</span>
-                            </div>
-                            <div className="item-info">
-                                <strong>{item.name}</strong>
-                                <span>{item.category}</span>
-                            </div>
-                            {item.cost && <div className="item-cost">{item.cost}</div>}
-                        </button>
-                    ))
+                    pagedItems.map((item) => {
+                        const slotIndex = getSlotIndex(item);
+                        const isDetailSelected = getItemKey(visibleItem) === getItemKey(item);
+
+                        return (
+                            <button
+                                key={getItemKey(item)}
+                                className={`item-item ${isDetailSelected ? "is-selected" : ""} ${slotIndex !== -1 ? "is-slotted" : ""}`}
+                                onClick={() => {
+                                    setSelectedItem(item);
+                                    if (onItemPick) {
+                                        onItemPick(item);
+                                    }
+                                }}
+                                type="button"
+                            >
+                                {slotIndex !== -1 && <span className="item-slot-badge">S{slotIndex + 1}</span>}
+                                <div className="item-icon">
+                                    {item.imageUrl ? (
+                                        <img src={item.imageUrl} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                                    ) : null}
+                                    <span>{getItemInitials(item.name)}</span>
+                                </div>
+                                <div className="item-info">
+                                    <strong>{item.name}</strong>
+                                    <span>{item.category}</span>
+                                </div>
+                                {item.cost && <div className="item-cost">{item.cost}</div>}
+                            </button>
+                        );
+                    })
                 )}
                 </div>
 

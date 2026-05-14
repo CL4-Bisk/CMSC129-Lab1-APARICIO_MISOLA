@@ -44,7 +44,6 @@ export async function signInAnonymouslyUser() {
     
     return user;
   } catch (error) {
-    console.error("Auth Error:", error);
     throw error;
   }
 }
